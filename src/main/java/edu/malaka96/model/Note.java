@@ -11,4 +11,5 @@ public class Note {
     private Integer id;
     private String title;
     private String body;
+    private boolean isFavorite;
 }

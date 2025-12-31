@@ -9,32 +9,33 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class NoteController {
 
     final NoteService service;
 
     @GetMapping()
-    public List<Note> getAllNotes(){
+    public List<Note> getAllNotes() {
         return service.getAllNotes();
     }
 
     @GetMapping("/{id}")
-    public Note getNote(@PathVariable int id){
+    public Note getNote(@PathVariable int id) {
         return service.getNote(id);
     }
 
     @PostMapping("/add")
-    public void addNote(@RequestBody Note note){
+    public void addNote(@RequestBody Note note) {
         service.addNote(note);
     }
 
     @PutMapping("/update")
-    public void updateNote(@RequestBody Note note){
+    public void updateNote(@RequestBody Note note) {
         service.updateNote(note);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteNote(@PathVariable int id){
+    public void deleteNote(@PathVariable int id) {
         service.deleteNote(id);
     }
 
