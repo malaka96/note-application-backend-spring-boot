@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public Note getNote(@PathVariable int id) {
+    public Optional<Note> getNote(@PathVariable int id) {
         return service.getNote(id);
     }
 
@@ -31,6 +32,7 @@ public class NoteController {
 
     @PutMapping("/update")
     public void updateNote(@RequestBody Note note) {
+        System.out.println(note);
         service.updateNote(note);
     }
 
