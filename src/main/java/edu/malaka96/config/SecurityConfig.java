@@ -1,5 +1,6 @@
 package edu.malaka96.config;
 
+import edu.malaka96.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
         httpSecurity.cors(Customizer.withDefaults())
@@ -47,7 +49,18 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+
+        return new ProviderManager(provider);
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
