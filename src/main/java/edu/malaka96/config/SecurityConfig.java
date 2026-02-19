@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/note/all",
                                 "/user/register",
                                 "/auth/login",
-                                "/logout").permitAll()
+                                "/auth/logout").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
