@@ -2,6 +2,7 @@ package edu.malaka96.controller;
 
 import edu.malaka96.model.Note;
 import edu.malaka96.service.NoteService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,11 @@ import java.util.Optional;
 public class NoteController {
 
     final NoteService service;
+
+    @GetMapping("/session-id")
+    public String getSessionId(HttpServletRequest request){
+        return "yello user, : "+request.getSession().getId();
+    }
 
     @GetMapping()
     public List<Note> getAllNotes() {
