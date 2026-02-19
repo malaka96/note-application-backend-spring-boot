@@ -19,12 +19,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserRequest userRequest) {
-        if(userRepository.existsByEmail(userRequest.getEmail()))
+        if (userRepository.existsByEmail(userRequest.getEmail()))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already exists");
         userRepository.save(UserEntity.builder()
                 .email(userRequest.getEmail())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .isAccountVerified(false)
+                .enabled(true)
                 .build());
     }
 }
