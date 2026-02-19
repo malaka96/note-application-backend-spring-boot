@@ -21,7 +21,7 @@ public class NoteController {
         return "yello user, : "+request.getSession().getId();
     }
 
-    @GetMapping()
+    @GetMapping("/note/all")
     public List<Note> getAllNotes() {
         return service.getAllNotes();
     }

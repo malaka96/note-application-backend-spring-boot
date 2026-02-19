@@ -25,7 +25,7 @@ public class NoteService {
     }
 
     public void addNote(Note note){
-        noteArrayList.add(new Note(noteArrayList.size(), note.getTitle(), note.getBody(), note.isFavorite()));
+        noteArrayList.add(new Note(noteArrayList.size(), note.getTitle(), note.getBody(), note.getIsFavorite()));
     }
 
     public void updateNote(Note note){
