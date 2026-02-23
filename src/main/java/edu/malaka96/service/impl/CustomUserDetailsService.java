@@ -1,6 +1,6 @@
 package edu.malaka96.service.impl;
 
-import edu.malaka96.model.Entity.UserEntity;
+import edu.malaka96.model.entity.UserEntity;
 import edu.malaka96.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;

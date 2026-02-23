@@ -41,7 +41,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(
-                                "/note/all",
                                 "/user/register",
                                 "/auth/login",
                                 "/auth/logout").permitAll()

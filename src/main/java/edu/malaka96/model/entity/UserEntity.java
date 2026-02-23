@@ -1,4 +1,4 @@
-package edu.malaka96.model.Entity;
+package edu.malaka96.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

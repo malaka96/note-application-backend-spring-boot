@@ -1,6 +1,6 @@
 package edu.malaka96.service.impl;
 
-import edu.malaka96.model.Entity.UserEntity;
+import edu.malaka96.model.entity.UserEntity;
 import edu.malaka96.model.dto.UserRequest;
 import edu.malaka96.repository.UserRepository;
 import edu.malaka96.service.UserService;
