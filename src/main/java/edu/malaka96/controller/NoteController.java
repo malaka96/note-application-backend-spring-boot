@@ -86,5 +86,14 @@ public class NoteController {
         }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteNote(
+            @CurrentSecurityContext(expression = "authentication?.name") String email,
+            @RequestParam Long id
+    ){
+        service.deleteNote(email, id);
+        return ResponseEntity.ok("Note deleted successfully");
+    }
+
 
 }

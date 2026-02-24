@@ -7,6 +7,7 @@ import edu.malaka96.model.entity.UserEntity;
 import edu.malaka96.repository.NoteRepository;
 import edu.malaka96.repository.UserRepository;
 import edu.malaka96.service.NoteService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class NoteServiceImpl implements NoteService {
 
     private final UserRepository userRepository;
@@ -76,6 +78,11 @@ public class NoteServiceImpl implements NoteService {
 
         existingNote.setIsFavorite(newState);
         noteRepository.save(existingNote);
+    }
+
+    @Override
+    public void deleteNote(String email, Long id) {
+        noteRepository.deleteByIdAndUserEmail(id,email);
     }
 
     private NoteResponse maptoNoteResponse(NoteEntity noteEntity){
