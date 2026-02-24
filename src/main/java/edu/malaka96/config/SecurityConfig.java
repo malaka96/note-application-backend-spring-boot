@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/user/register",
                                 "/auth/login",
+                                "/auth/mobile/login",
                                 "/auth/logout").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session ->
