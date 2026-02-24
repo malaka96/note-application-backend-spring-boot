@@ -48,4 +48,17 @@ public class NoteController {
         return ResponseEntity.ok(service.getAllNotes(email));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> update(
+            @CurrentSecurityContext(expression = "authentication?.name") String email,
+            @RequestParam Long id,
+            @RequestBody NoteRequest noteRequest){
+        try{
+            service.updateNote(email, id, noteRequest);
+            return ResponseEntity.ok("Note updated successfully");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }

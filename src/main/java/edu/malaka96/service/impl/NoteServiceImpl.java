@@ -47,6 +47,20 @@ public class NoteServiceImpl implements NoteService {
 
     }
 
+    @Override
+    public void updateNote(String email, Long id, NoteRequest noteRequest) {
+
+        NoteEntity existingNote = noteRepository
+                .findByIdAndUserEmail(id, email)
+                .orElseThrow(() -> new RuntimeException("Note not found or access denied"));
+
+        existingNote.setTitle(noteRequest.getTitle());
+        existingNote.setBody(noteRequest.getBody());
+        existingNote.setIsFavorite(noteRequest.getIsFavorite());
+
+        noteRepository.save(existingNote);
+    }
+
     private NoteResponse maptoNoteResponse(NoteEntity noteEntity){
         return NoteResponse.builder()
                 .id(noteEntity.getId())
