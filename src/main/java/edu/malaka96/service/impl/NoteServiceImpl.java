@@ -61,6 +61,13 @@ public class NoteServiceImpl implements NoteService {
         noteRepository.save(existingNote);
     }
 
+    @Override
+    public List<NoteResponse> getAllFavoriteNotes(String email) {
+        return noteRepository.findByUserEmailAndIsFavoriteTrue(email).stream()
+                .map(this::maptoNoteResponse)
+                .toList();
+    }
+
     private NoteResponse maptoNoteResponse(NoteEntity noteEntity){
         return NoteResponse.builder()
                 .id(noteEntity.getId())

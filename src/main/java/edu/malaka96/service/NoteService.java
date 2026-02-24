@@ -9,4 +9,5 @@ public interface NoteService {
     void addNote(String email, NoteRequest noteRequest);
     List<NoteResponse> getAllNotes(String email);
     void updateNote(String email, Long id, NoteRequest noteRequest);
+    List<NoteResponse> getAllFavoriteNotes(String email);
 }

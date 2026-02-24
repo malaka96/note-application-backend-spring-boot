@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface NoteRepository extends JpaRepository<NoteEntity, Long> {
     List<NoteEntity> findByUser(UserEntity user);
     Optional<NoteEntity> findByIdAndUserEmail(Long id, String email);
+    List<NoteEntity> findByUserEmailAndIsFavoriteTrue(String email);
 }

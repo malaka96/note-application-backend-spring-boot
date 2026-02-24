@@ -24,8 +24,8 @@ public class NoteController {
     final NoteService service;
 
     @GetMapping("/session-id")
-    public String getSessionId(HttpServletRequest request){
-        return "yello user, : "+request.getSession().getId();
+    public String getSessionId(HttpServletRequest request) {
+        return "yello user, : " + request.getSession().getId();
     }
 
 
@@ -33,32 +33,40 @@ public class NoteController {
     public ResponseEntity<?> addNote(
             @CurrentSecurityContext(expression = "authentication?.name") String email,
             @RequestBody NoteRequest noteRequest) {
-        try{
-            service.addNote(email,noteRequest);
+        try {
+            service.addNote(email, noteRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("Note created successfully");
-        }catch (UsernameNotFoundException e){
+        } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot create note");
         }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll(@CurrentSecurityContext(expression = "authentication?.name") String email){
+    public ResponseEntity<?> getAll(@CurrentSecurityContext(expression = "authentication?.name") String email) {
         return ResponseEntity.ok(service.getAllNotes(email));
+    }
+
+    @GetMapping("/all/favorite")
+    public ResponseEntity<?> getAllFavorites(
+            @CurrentSecurityContext(expression = "authentication?.name") String email
+    ) {
+        return ResponseEntity.ok(service.getAllFavoriteNotes(email));
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> update(
             @CurrentSecurityContext(expression = "authentication?.name") String email,
             @RequestParam Long id,
-            @RequestBody NoteRequest noteRequest){
-        try{
+            @RequestBody NoteRequest noteRequest) {
+        try {
             service.updateNote(email, id, noteRequest);
             return ResponseEntity.ok("Note updated successfully");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 
 }
