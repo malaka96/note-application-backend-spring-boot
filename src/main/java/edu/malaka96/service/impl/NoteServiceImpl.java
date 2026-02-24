@@ -1,6 +1,7 @@
 package edu.malaka96.service.impl;
 
 import edu.malaka96.model.dto.NoteRequest;
+import edu.malaka96.model.dto.NoteResponse;
 import edu.malaka96.model.entity.NoteEntity;
 import edu.malaka96.model.entity.UserEntity;
 import edu.malaka96.repository.NoteRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +36,24 @@ public class NoteServiceImpl implements NoteService {
 
         noteRepository.save(note);
 
+    }
+
+    @Override
+    public List<NoteResponse> getAllNotes(String email) {
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        return user.map(userEntity -> noteRepository.findByUser(userEntity).stream()
+                .map(this::maptoNoteResponse)
+                .toList()).orElseGet(List::of);
+
+    }
+
+    private NoteResponse maptoNoteResponse(NoteEntity noteEntity){
+        return NoteResponse.builder()
+                .id(noteEntity.getId())
+                .userEmail(noteEntity.getUser().getEmail())
+                .title(noteEntity.getTitle())
+                .body(noteEntity.getBody())
+                .isFavorite(noteEntity.getIsFavorite())
+                .build();
     }
 }

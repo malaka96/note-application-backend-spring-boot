@@ -2,6 +2,7 @@ package edu.malaka96.controller;
 
 import edu.malaka96.model.Note;
 import edu.malaka96.model.dto.NoteRequest;
+import edu.malaka96.model.dto.NoteResponse;
 import edu.malaka96.service.NoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,11 @@ public class NoteController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot create note");
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(@CurrentSecurityContext(expression = "authentication?.name") String email){
+        return ResponseEntity.ok(service.getAllNotes(email));
     }
 
 }
