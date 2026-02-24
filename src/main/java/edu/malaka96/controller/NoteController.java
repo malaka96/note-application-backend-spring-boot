@@ -1,9 +1,14 @@
 package edu.malaka96.controller;
 
 import edu.malaka96.model.Note;
+import edu.malaka96.model.dto.NoteRequest;
 import edu.malaka96.service.NoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
+@RequestMapping("/note")
 public class NoteController {
 
     final NoteService service;
@@ -21,30 +27,19 @@ public class NoteController {
         return "yello user, : "+request.getSession().getId();
     }
 
-    @GetMapping("/note/all")
-    public List<Note> getAllNotes() {
-        return service.getAllNotes();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Note> getNote(@PathVariable int id) {
-        return service.getNote(id);
-    }
 
     @PostMapping("/add")
-    public void addNote(@RequestBody Note note) {
-        service.addNote(note);
-    }
-
-    @PutMapping("/update")
-    public void updateNote(@RequestBody Note note) {
-        System.out.println(note);
-        service.updateNote(note);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteNote(@PathVariable int id) {
-        service.deleteNote(id);
+    public ResponseEntity<?> addNote(
+            @CurrentSecurityContext(expression = "authentication?.name") String email,
+            @RequestBody NoteRequest noteRequest) {
+        try{
+            service.addNote(email,noteRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Note created successfully");
+        }catch (UsernameNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot create note");
+        }
     }
 
 }

@@ -16,12 +16,13 @@ public class NoteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String body;
     private Boolean isFavorite = false;
 }
