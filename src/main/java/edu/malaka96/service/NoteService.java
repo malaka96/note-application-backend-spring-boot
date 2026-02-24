@@ -10,4 +10,5 @@ public interface NoteService {
     List<NoteResponse> getAllNotes(String email);
     void updateNote(String email, Long id, NoteRequest noteRequest);
     List<NoteResponse> getAllFavoriteNotes(String email);
+    void updateNoteFavoriteState(String email, Long id, Boolean newState);
 }

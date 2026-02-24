@@ -52,7 +52,7 @@ public class NoteServiceImpl implements NoteService {
 
         NoteEntity existingNote = noteRepository
                 .findByIdAndUserEmail(id, email)
-                .orElseThrow(() -> new RuntimeException("Note not found or access denied"));
+                .orElseThrow(() -> new RuntimeException("Note not found"));
 
         existingNote.setTitle(noteRequest.getTitle());
         existingNote.setBody(noteRequest.getBody());
@@ -66,6 +66,16 @@ public class NoteServiceImpl implements NoteService {
         return noteRepository.findByUserEmailAndIsFavoriteTrue(email).stream()
                 .map(this::maptoNoteResponse)
                 .toList();
+    }
+
+    @Override
+    public void updateNoteFavoriteState(String email, Long id, Boolean newState) {
+        NoteEntity existingNote = noteRepository
+                .findByIdAndUserEmail(id, email)
+                .orElseThrow(() -> new RuntimeException("Note not found"));
+
+        existingNote.setIsFavorite(newState);
+        noteRepository.save(existingNote);
     }
 
     private NoteResponse maptoNoteResponse(NoteEntity noteEntity){

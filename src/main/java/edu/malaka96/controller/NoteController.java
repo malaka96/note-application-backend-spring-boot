@@ -65,6 +65,24 @@ public class NoteController {
             return ResponseEntity.ok("Note updated successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update/favorite")
+    public ResponseEntity<?> updateFavoriteState(
+            @CurrentSecurityContext(expression = "authentication?.name") String email,
+            @RequestParam Long id,
+            @RequestParam Boolean isFavorite
+    ){
+        try {
+            service.updateNoteFavoriteState(email,id,isFavorite);
+            return ResponseEntity.ok("Note updated successfully");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
