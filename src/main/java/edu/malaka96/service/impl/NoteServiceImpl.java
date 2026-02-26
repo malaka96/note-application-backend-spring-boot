@@ -24,7 +24,7 @@ public class NoteServiceImpl implements NoteService {
     private final NoteRepository noteRepository;
 
     @Override
-    public void addNote(String email, NoteRequest noteRequest) {
+    public NoteResponse addNote(String email, NoteRequest noteRequest) {
         Optional<UserEntity> user = userRepository.findByEmail(email);
         if(user.isEmpty())
             throw new UsernameNotFoundException("User is not found");
@@ -36,7 +36,7 @@ public class NoteServiceImpl implements NoteService {
                 .isFavorite(false)
                 .build();
 
-        noteRepository.save(note);
+        return maptoNoteResponse(noteRepository.save(note));
 
     }
 

@@ -34,8 +34,8 @@ public class NoteController {
             @CurrentSecurityContext(expression = "authentication?.name") String email,
             @RequestBody NoteRequest noteRequest) {
         try {
-            service.addNote(email, noteRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Note created successfully");
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.addNote(email, noteRequest));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
