@@ -1,14 +1,18 @@
 package edu.malaka96.service.impl;
 
+import edu.malaka96.model.dto.UserResponse;
 import edu.malaka96.model.entity.UserEntity;
 import edu.malaka96.model.dto.UserRequest;
 import edu.malaka96.repository.UserRepository;
 import edu.malaka96.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,4 +32,19 @@ public class UserServiceImpl implements UserService {
                 .enabled(true)
                 .build());
     }
+
+    @Override
+    public UserResponse getDetails(String email) {
+        return userRepository.findByEmail(email).map(this::mapToUserResponse)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    private UserResponse mapToUserResponse(UserEntity userEntity) {
+        return UserResponse.builder()
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
+                .build();
+    }
+
+
 }

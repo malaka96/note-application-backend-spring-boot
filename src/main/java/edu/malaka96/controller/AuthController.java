@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -61,7 +62,7 @@ public class AuthController {
     public ResponseEntity<?> loginViaMobile(@RequestBody UserRequest userRequest) {
         try {
             String jwtToken = authService.login(userRequest.getEmail(), userRequest.getPassword());
-            log.info("an user logged");
+            log.info("a mobile user logged");
             return ResponseEntity.ok(
                     Map.of("accessToken", jwtToken)
             );
@@ -82,6 +83,11 @@ public class AuthController {
             error.put("message", "Authentication is falied");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
         }
+    }
+
+    @GetMapping("/isAuthenticated")
+    public ResponseEntity<Boolean> isAuthenticated(@CurrentSecurityContext(expression = "authentication?.name") String email){
+        return ResponseEntity.ok(email != null);
     }
 
     @GetMapping("/logout")

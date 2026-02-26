@@ -5,10 +5,9 @@ import edu.malaka96.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -26,6 +25,17 @@ public class UserController {
         }catch (ResponseStatusException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<?> getDetails(@CurrentSecurityContext(expression = "authentication?.name") String email){
+        try{
+            return ResponseEntity.ok(userService.getDetails(email));
+        }catch (UsernameNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
