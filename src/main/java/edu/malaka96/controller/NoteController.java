@@ -48,6 +48,18 @@ public class NoteController {
         return ResponseEntity.ok(service.getAllNotes(email));
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<?> getNote(@CurrentSecurityContext(expression = "authentication?.name") String email,
+                                     @RequestParam Long id){
+        try{
+            return ResponseEntity.ok(service.getNote(email,id));
+        }catch (UsernameNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/all/favorite")
     public ResponseEntity<?> getAllFavorites(
             @CurrentSecurityContext(expression = "authentication?.name") String email

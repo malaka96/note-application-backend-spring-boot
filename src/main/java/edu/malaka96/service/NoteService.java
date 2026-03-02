@@ -8,6 +8,7 @@ import java.util.List;
 public interface NoteService {
     NoteResponse addNote(String email, NoteRequest noteRequest);
     List<NoteResponse> getAllNotes(String email);
+    NoteResponse getNote(String email, Long id);
     void updateNote(String email, Long id, NoteRequest noteRequest);
     List<NoteResponse> getAllFavoriteNotes(String email);
     void updateNoteFavoriteState(String email, Long id, Boolean newState);

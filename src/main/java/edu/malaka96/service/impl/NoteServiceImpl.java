@@ -50,6 +50,12 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public NoteResponse getNote(String email, Long id) {
+        return noteRepository.findByIdAndUserEmail(id, email).map(this::maptoNoteResponse)
+                .orElseThrow(() -> new UsernameNotFoundException("Note not found"));
+    }
+
+    @Override
     public void updateNote(String email, Long id, NoteRequest noteRequest) {
 
         NoteEntity existingNote = noteRepository
